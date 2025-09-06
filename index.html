@@ -1,644 +1,519 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Coding Class with Dongjo Lim</title>
-    <!-- Google Fonts와 아이콘 라이브러리 불러오기 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    
-    <style>
-        /* CSS 변수 선언: 라이트/다크 모드 및 스타일 관리 */
-        :root {
-            --primary-color: #8E44AD; /* Vibe Coding의 메인 퍼플 컬러 */
-            --primary-color-dark: #9B59B6;
-            --secondary-color: #f4f5f7;
-            --background-color: #ffffff;
-            --text-color: #34495e;
-            --light-text-color: #7f8c8d;
-            --card-bg-color: #ffffff;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --border-radius: 16px;
-            --transition-speed: 0.3s;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibe Coding Class with Dongjo Lim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary-color: #8e44ad;
+      --primary-color-dark: #9b59b6;
+      --secondary-color: #f4f5f7;
+      --background-color: #ffffff;
+      --text-color: #34495e;
+      --light-text-color: #7f8c8d;
+      --card-bg-color: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --border-radius: 16px;
+      --transition-speed: 0.3s;
+    }
+    body.dark-mode {
+      --secondary-color: #2c3e50;
+      --background-color: #1c2833;
+      --text-color: #ecf0f1;
+      --light-text-color: #bdc3c7;
+      --card-bg-color: #34495e;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
 
-        body.dark-mode {
-            --secondary-color: #2c3e50;
-            --background-color: #1c2833;
-            --text-color: #ecf0f1;
-            --light-text-color: #bdc3c7;
-            --card-bg-color: #34495e;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.8;
+      transition: background-color var(--transition-speed), color var(--transition-speed);
+    }
+    .page-wrapper { opacity: 0; animation: fadeIn 1s ease-in-out forwards; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-        /* 기본 스타일 리셋 및 설정 */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Poppins', 'Noto Sans KR', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.8;
-            transition: background-color var(--transition-speed), color var(--transition-speed);
-        }
-        .page-wrapper { opacity: 0; animation: fadeIn 1s ease-in-out forwards; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    /* Header */
+    .main-header {
+      background-color: transparent; padding: 1rem 0; position: fixed;
+      width: 100%; top: 0; left: 0; z-index: 1000;
+      transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .main-header.scrolled {
+      background-color: var(--card-bg-color);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .main-header .container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #fff; text-decoration: none; text-shadow: 1px 1px 3px rgba(0,0,0,0.2);}
+    .main-nav { display: flex; align-items: center; }
+    .main-nav ul { display: flex; list-style: none; }
+    .main-nav ul li { margin-left: 30px; }
+    .main-nav ul li a {
+      text-decoration: none; color: #fff; font-weight: 600;
+      position: relative; padding-bottom: 5px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    .main-header.scrolled .logo,
+    .main-header.scrolled .main-nav ul li a,
+    .main-header.scrolled .dark-mode-toggle {
+      color: var(--text-color);
+      text-shadow: none;
+    }
+    .main-nav ul li a::after {
+      content: ''; position: absolute; bottom: 0; left: 50%;
+      transform: translateX(-50%); width: 0; height: 2px;
+      background-color: #fff; transition: width var(--transition-speed) ease;
+    }
+    .main-header.scrolled .main-nav ul li a::after { background-color: var(--primary-color); }
+    body.dark-mode .main-nav ul li a::after { background-color: var(--primary-color-dark); }
+    .main-nav ul li a:hover::after { width: 100%; }
+    .dark-mode-toggle { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #fff; margin-left: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.2);}    
+    .menu-toggle { display: none; }
 
-        /* 헤더 (네비게이션 바) */
-        .main-header {
-            background-color: transparent; padding: 1rem 0; position: fixed;
-            width: 100%; top: 0; left: 0; z-index: 1000;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
-        }
-        .main-header.scrolled {
-            background-color: var(--card-bg-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .main-header .container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); text-decoration: none; }
-        body.dark-mode .logo { color: var(--primary-color-dark); }
-        .main-nav { display: flex; align-items: center; }
-        .main-nav ul { display: flex; list-style: none; }
-        .main-nav ul li { margin-left: 30px; }
-        .main-nav ul li a {
-            text-decoration: none; color: var(--text-color); font-weight: 600;
-            position: relative; padding-bottom: 5px;
-        }
-        .main-nav ul li a::after {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            transform: translateX(-50%); width: 0; height: 2px;
-            background-color: var(--primary-color); transition: width var(--transition-speed) ease;
-        }
-        body.dark-mode .main-nav ul li a::after { background-color: var(--primary-color-dark); }
-        .main-nav ul li a:hover::after { width: 100%; }
-        .dark-mode-toggle { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-color); margin-left: 20px; }
-        .menu-toggle { display: none; }
+    /* Hero */
+    .hero {
+      position: relative; /* for overlays */
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 60px;
+      overflow: hidden;
+    }
+    /* Background image layer */
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image: url('바이브코딩 컨셉 이미지3.jpeg');
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+      filter: blur(4px) saturate(110%) brightness(0.65);
+      transform: scale(1.05); /* avoid edge blur cut */
+      z-index: -2;
+    }
+    /* Readability scrim (subtle gradient + center vignette) */
+    .hero::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.65) 100%),
+                  linear-gradient(135deg, rgba(142,68,173,0.35), rgba(52,152,219,0.35));
+      z-index: -1;
+    }
+    .hero-content { max-width: 800px; position: relative; z-index: 1; }
+    .hero h1 { font-size: 3.8rem; margin-bottom: 1rem; font-weight: 700; text-shadow: 0 2px 18px rgba(0,0,0,0.55); }
+    .hero p { font-size: 1.3rem; margin-bottom: 2.5rem; font-weight: 300; opacity: .95; text-shadow: 0 1px 10px rgba(0,0,0,.6); }
+    .btn {
+      display: inline-block; background-color: #ffffff; color: var(--primary-color);
+      padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: all var(--transition-speed) ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+    body.dark-mode .btn { color: var(--primary-color-dark); }
 
-        /* 히어로 섹션 */
-        .hero {
-            background: linear-gradient(135deg, var(--primary-color), #3498db);
-            color: #ffffff; height: 100vh; display: flex;
-            justify-content: center; align-items: center; text-align: center;
-            padding-top: 60px;
-        }
-        .hero-content { max-width: 800px; }
-        .hero h1 { font-size: 3.8rem; margin-bottom: 1rem; font-weight: 700; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); }
-        .hero p { font-size: 1.3rem; margin-bottom: 2.5rem; font-weight: 300; opacity: 0.9; }
-        .btn {
-            display: inline-block; background-color: #ffffff; color: var(--primary-color);
-            padding: 15px 35px; border-radius: 50px; text-decoration: none;
-            font-weight: 700; transition: all var(--transition-speed) ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        body.dark-mode .btn { color: var(--primary-color-dark); }
+    /* Sections */
+    .section { padding: 100px 0; }
+    .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 1rem; font-weight: 700; }
+    .section-subtitle { text-align: center; color: var(--light-text-color); margin-bottom: 5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
 
-        /* 공통 섹션 스타일 */
-        .section { padding: 100px 0; }
-        .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 1rem; font-weight: 700; }
-        .section-subtitle { text-align: center; color: var(--light-text-color); margin-bottom: 5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+    /* Professor */
+    #professor { background-color: var(--secondary-color); }
+    .profile-container { display: flex; align-items: center; gap: 50px; }
+    .profile-image { flex-shrink: 0; }
+    .profile-image img { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 8px solid var(--background-color); box-shadow: var(--shadow); }
+    .profile-text h2 { font-size: 2rem; color: var(--primary-color); }
+    body.dark-mode .profile-text h2 { color: var(--primary-color-dark); }
+    .profile-text .subtitle { font-weight: 700; margin-bottom: 1rem; }
+    .profile-text ul { list-style: none; padding-left: 20px; }
+    .profile-text ul li { margin-bottom: 0.5rem; }
+    .profile-text ul li i { color: var(--primary-color); margin-right: 10px; }
+    body.dark-mode .profile-text ul li i { color: var(--primary-color-dark); }
 
-        /* 교수님 프로필 섹션 */
-        #professor { background-color: var(--secondary-color); }
-        .profile-container {
-            display: flex; align-items: center; gap: 50px;
-        }
-        .profile-image { flex-shrink: 0; }
-        .profile-image img {
-            width: 250px; height: 250px;
-            border-radius: 50%; object-fit: cover;
-            border: 8px solid var(--background-color);
-            box-shadow: var(--shadow);
-        }
-        .profile-text h2 { font-size: 2rem; color: var(--primary-color); }
-        body.dark-mode .profile-text h2 { color: var(--primary-color-dark); }
-        .profile-text .subtitle { font-weight: 700; margin-bottom: 1rem; }
-        .profile-text ul { list-style: none; padding-left: 20px; }
-        .profile-text ul li { margin-bottom: 0.5rem; }
-        .profile-text ul li i { color: var(--primary-color); margin-right: 10px; }
-        body.dark-mode .profile-text ul li i { color: var(--primary-color-dark); }
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: center; }
+    .stat-item { background: var(--card-bg-color); padding: 30px; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+    .stat-item .icon { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem; }
+    body.dark-mode .stat-item .icon { color: var(--primary-color-dark); }
+    .stat-item .counter { font-size: 3rem; font-weight: 700; }
+    .stat-item p { color: var(--light-text-color); font-size: 1.1rem; }
 
+    /* Vibe Content */
+    #vibe-content { background-color: var(--secondary-color); }
+    .vibe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .vibe-item { border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow); }
+    .vibe-item iframe { width: 100%; height: 315px; border: none; border-radius: var(--border-radius); }
+    .vibe-item h3 { margin-top: 1.5rem; text-align: center; }
 
-        /* 통계 카운터 섹션 */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: center; }
-        .stat-item { background: var(--card-bg-color); padding: 30px; border-radius: var(--border-radius); box-shadow: var(--shadow); }
-        .stat-item .icon { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem; }
-        body.dark-mode .stat-item .icon { color: var(--primary-color-dark); }
-        .stat-item .counter { font-size: 3rem; font-weight: 700; }
-        .stat-item p { color: var(--light-text-color); font-size: 1.1rem; }
+    /* Courses */
+    .course-accordion .course-item { background-color: var(--card-bg-color); margin-bottom: 15px; border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; transition: all var(--transition-speed) ease; }
+    .course-header { padding: 20px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .course-header h3 { font-size: 1.2rem; }
+    .course-header .icon { transition: transform var(--transition-speed); }
+    .course-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+    .course-content-inner { padding: 20px 25px; }
+    .course-item.active .course-header .icon { transform: rotate(180deg); }
+    .course-goal { font-weight: 500; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--secondary-color); line-height: 1.6; }
+    body.dark-mode .course-goal { border-bottom-color: #4a6177; }
+    .curriculum-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    .curriculum-table th, .curriculum-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--secondary-color); }
+    body.dark-mode .curriculum-table th, body.dark-mode .curriculum-table td { border-bottom-color: #4a6177; }
+    .curriculum-table th { width: 80px; font-weight: 600; vertical-align: top; }
+    .curriculum-table td { line-height: 1.9; }
 
-        /* Vibe 콘텐츠 섹션 */
-        #vibe-content { background-color: var(--secondary-color); }
-        .vibe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
-        .vibe-item { border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow); }
-        .vibe-item iframe {
-            width: 100%;
-            height: 315px;
-            border: none;
-            border-radius: var(--border-radius);
-        }
-        .vibe-item h3 { margin-top: 1.5rem; text-align: center; }
+    /* Footer */
+    #contact { background: #2c3e50; color: #ecf0f1; padding-bottom: 0; }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: center; padding: 80px 0; }
+    .contact-item i { font-size: 2rem; margin-bottom: 1rem; color: var(--primary-color-dark); }
+    .contact-item a { color: #ecf0f1; text-decoration: none; }
+    .map-container { width: 100%; height: 400px; }
+    .map-container iframe { width: 100%; height: 100%; border: 0; }
 
-        /* 강의 프로그램 섹션 */
-        .course-accordion .course-item {
-            background-color: var(--card-bg-color);
-            margin-bottom: 15px; border-radius: var(--border-radius);
-            box-shadow: var(--shadow); overflow: hidden;
-            transition: all var(--transition-speed) ease;
-        }
-        .course-header {
-            padding: 20px 25px; cursor: pointer; display: flex;
-            justify-content: space-between; align-items: center;
-        }
-        .course-header h3 { font-size: 1.2rem; }
-        .course-header .icon { transition: transform var(--transition-speed); }
-        .course-content {
-            max-height: 0; overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-        .course-content-inner { padding: 20px 25px; }
-        .course-item.active .course-header .icon { transform: rotate(180deg); }
-        
-        .course-goal {
-            font-weight: 500;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--secondary-color);
-            line-height: 1.6;
-        }
-        body.dark-mode .course-goal {
-            border-bottom-color: #4a6177;
-        }
+    .final-message { padding: 60px 20px; text-align: center; background: linear-gradient(135deg, var(--primary-color), #3498db); }
+    .final-message h2 { font-size: 2.5rem; color: white; font-weight: 700; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
 
-        .curriculum-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-        }
-        .curriculum-table th, .curriculum-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--secondary-color);
-        }
-        body.dark-mode .curriculum-table th, body.dark-mode .curriculum-table td {
-            border-bottom-color: #4a6177;
-        }
-        .curriculum-table th {
-            width: 80px;
-            font-weight: 600;
-            vertical-align: top;
-        }
-        .curriculum-table td {
-            line-height: 1.9;
-        }
+    /* To top */
+    #to-top-btn { position: fixed; bottom: 20px; right: 20px; background-color: var(--primary-color); color: #fff; width: 50px; height: 50px; border-radius: 50%; text-align: center; line-height: 50px; font-size: 1.5rem; text-decoration: none; box-shadow: var(--shadow); opacity: 0; visibility: hidden; transition: all var(--transition-speed); }
+    #to-top-btn.show { opacity: 1; visibility: visible; }
+    body.dark-mode #to-top-btn { background-color: var(--primary-color-dark); }
 
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { position: relative; transform: translateY(100px); opacity: 0; transition: 1s all ease; }
+    .reveal.active { transform: translateY(0); opacity: 1; }
 
-        /* 연락처 및 푸터 */
-        #contact { background: #2c3e50; color: #ecf0f1; padding-bottom: 0; }
-        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: center; padding: 80px 0; }
-        .contact-item i { font-size: 2rem; margin-bottom: 1rem; color: var(--primary-color-dark); }
-        .contact-item a { color: #ecf0f1; text-decoration: none; }
-        
-        .map-container {
-            width: 100%;
-            height: 400px; /* 지도의 높이를 설정합니다. */
-        }
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-        
-        .final-message {
-            padding: 60px 20px; text-align: center;
-            background: linear-gradient(135deg, var(--primary-color), #3498db);
-        }
-        .final-message h2 {
-            font-size: 2.5rem; color: white; font-weight: 700;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-        }
-
-        /* 맨 위로 가기 버튼 */
-        #to-top-btn {
-            position: fixed; bottom: 20px; right: 20px; background-color: var(--primary-color);
-            color: #fff; width: 50px; height: 50px; border-radius: 50%; text-align: center;
-            line-height: 50px; font-size: 1.5rem; text-decoration: none; box-shadow: var(--shadow);
-            opacity: 0; visibility: hidden; transition: all var(--transition-speed);
-        }
-        #to-top-btn.show { opacity: 1; visibility: visible; }
-        body.dark-mode #to-top-btn { background-color: var(--primary-color-dark); }
-
-        /* 애니메이션 */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .reveal { position: relative; transform: translateY(100px); opacity: 0; transition: 1s all ease; }
-        .reveal.active { transform: translateY(0); opacity: 1; }
-
-        /* 반응형 디자인 */
-        @media(max-width: 992px) {
-            .profile-container { flex-direction: column; text-align: center; }
-            .profile-text ul { text-align: left; display: inline-block; }
-            .vibe-grid { grid-template-columns: 1fr; }
-        }
-        @media(max-width: 768px) {
-            .hero h1 { font-size: 2.8rem; }
-            .hero p { font-size: 1.1rem; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .menu-toggle { display: block; font-size: 1.5rem; background: none; border: none; color: var(--text-color); cursor: pointer; z-index: 1001;}
-            .main-nav ul {
-                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
-                background-color: var(--card-bg-color); flex-direction: column; justify-content: center;
-                align-items: center; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.5s ease;
-            }
-            .main-nav ul.active { right: 0; }
-            .main-nav ul li { margin: 20px 0; }
-        }
-    </style>
+    /* Responsive */
+    @media(max-width: 992px) {
+      .profile-container { flex-direction: column; text-align: center; }
+      .profile-text ul { text-align: left; display: inline-block; }
+      .vibe-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 3rem; }
+    }
+    @media(max-width: 768px) {
+      .hero h1 { font-size: 2.4rem; }
+      .hero p { font-size: 1.05rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .menu-toggle { display: block; font-size: 1.5rem; background: none; border: none; color: var(--text-color); cursor: pointer; z-index: 1001; }
+      .main-nav ul { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background-color: var(--card-bg-color); flex-direction: column; justify-content: center; align-items: center; box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.5s ease; }
+      .main-nav ul.active { right: 0; }
+      .main-nav ul li { margin: 20px 0; }
+    }
+  </style>
 </head>
 <body>
-
-<div class="page-wrapper">
+  <div class="page-wrapper">
     <header class="main-header">
-        <div class="container">
-            <a href="#" class="logo">Vibe Coding</a>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#hero-section">Home</a></li>
-                    <li><a href="#professor">Professor</a></li>
-                    <li><a href="#courses">Courses</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <button class="dark-mode-toggle"><i class="fas fa-moon"></i></button>
-                <button class="menu-toggle"><i class="fas fa-bars"></i></button>
-            </nav>
-        </div>
+      <div class="container">
+        <a href="#" class="logo">Vibe Coding</a>
+        <nav class="main-nav">
+          <ul>
+            <li><a href="#hero-section">Home</a></li>
+            <li><a href="#professor">Professor</a></li>
+            <li><a href="#courses">Courses</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <button class="dark-mode-toggle"><i class="fas fa-moon"></i></button>
+          <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+        </nav>
+      </div>
     </header>
 
     <main>
-        <section class="hero" id="hero-section">
-            <div class="hero-content">
-                <h1>사랑하는 임동조 교수님과 함께하는<br>Vibe Coding Class</h1>
-                <p>미래를 코딩하세요. 생성형 AI의 무한한 가능성을 최고의 전문가와 함께 탐험하세요.</p>
-                <a href="#courses" class="btn">강의 둘러보기</a>
-            </div>
-        </section>
+      <section class="hero" id="hero-section">
+        <div class="hero-content">
+          <h1>사랑하는 임동조 교수님과 함께하는<br />Vibe Coding Class</h1>
+          <p>미래를 코딩하세요. 생성형 AI의 무한한 가능성을 최고의 전문가와 함께 탐험하세요.</p>
+          <a href="#courses" class="btn">강의 둘러보기</a>
+        </div>
+      </section>
 
-        <section class="section" id="professor">
-            <div class="container">
-                <h2 class="section-title">Class Director</h2>
-                <p class="section-subtitle">AI 시대의 길을 밝히는 선구자, 임동조 교수님을 소개합니다.</p>
-                <div class="profile-container reveal">
-                    <div class="profile-image">
-                        <img src="임동조교수님 사진.jpeg" alt="임동조 교수님 프로필 사진">
-                    </div>
-                    <div class="profile-text">
-                        <h2>임동조 교수</h2>
-                        <p class="subtitle">가천대학교 소프트웨어학과</p>
-                        <p>소프트웨어와 인공지능 분야의 저명한 학자이자 교육자로서, 복잡한 기술을 명쾌하게 풀어내는 독보적인 강의로 수많은 개발자들의 존경을 받고 있습니다. 그의 통찰력은 단순한 지식 전달을 넘어, 학생들이 기술의 본질을 꿰뚫고 창의적인 문제 해결 능력을 갖추도록 이끌어줍니다.</p>
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> <strong>주요 연구:</strong> 인공지능, 소프트웨어 공학, 멀티모달 시스템</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>대표 저서:</strong> "Vibe를 담은 AI 코딩" (2025)</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>교육 철학:</strong> "코드는 논리가 아닌 감성으로 쓰는 것이다."</li>
-                        </ul>
-                    </div>
-                </div>
+      <section class="section" id="professor">
+        <div class="container">
+          <h2 class="section-title">Class Director</h2>
+          <p class="section-subtitle">AI 시대의 길을 밝히는 선구자, 임동조 교수님을 소개합니다.</p>
+          <div class="profile-container reveal">
+            <div class="profile-image">
+              <img src="임동조교수님 사진.jpeg" alt="임동조 교수님 프로필 사진" />
             </div>
-        </section>
-        
-        <section class="section" id="stats">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-item reveal">
-                        <div class="icon"><i class="fas fa-users"></i></div>
-                        <h3 class="counter" data-target="50000">0</h3>
-                        <p>누적 수강생</p>
-                    </div>
-                    <div class="stat-item reveal">
-                        <div class="icon"><i class="fas fa-thumbs-up"></i></div>
-                        <h3 class="counter" data-target="20000">0</h3>
-                        <p>강의 만족도(%)</p>
-                    </div>
-                    <div class="stat-item reveal">
-                        <div class="icon"><i class="fas fa-comments"></i></div>
-                        <h3 class="counter" data-target="1000000">0</h3>
-                        <p>수강생 후기</p>
-                    </div>
-                </div>
+            <div class="profile-text">
+              <h2>임동조 교수</h2>
+              <p class="subtitle">가천대학교 소프트웨어학과</p>
+              <p>소프트웨어와 인공지능 분야의 저명한 학자이자 교육자로서, 복잡한 기술을 명쾌하게 풀어내는 독보적인 강의로 수많은 개발자들의 존경을 받고 있습니다. 그의 통찰력은 단순한 지식 전달을 넘어, 학생들이 기술의 본질을 꿰뚫고 창의적인 문제 해결 능력을 갖추도록 이끌어줍니다.</p>
+              <ul>
+                <li><i class="fas fa-check-circle"></i> <strong>주요 연구:</strong> 인공지능, 소프트웨어 공학, 멀티모달 시스템</li>
+                <li><i class="fas fa-check-circle"></i> <strong>대표 저서:</strong> "Vibe를 담은 AI 코딩" (2025)</li>
+                <li><i class="fas fa-check-circle"></i> <strong>교육 철학:</strong> "코드는 논리가 아닌 감성으로 쓰는 것이다."</li>
+              </ul>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <section class="section" id="vibe-content">
-            <div class="container">
-                <h2 class="section-title">The Vibe of Coding</h2>
-                <p class="section-subtitle">코딩은 차가운 기술이 아닌, 뜨거운 창작의 과정입니다. Vibe Coding의 영감을 느껴보세요.</p>
-                <div class="vibe-grid">
-                    <div class="vibe-item reveal">
-                        <iframe src="https://www.youtube.com/embed/P3LrfQpOi84" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                        <h3>Nano Banana가 만든 Vibe Coding 데모</h3>
-                    </div>
-                    <div class="vibe-item reveal">
-                        <iframe src="https://www.youtube.com/embed/K4OrSx0Vkj0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                        <h3>Veo3가 만든 바이크코딩</h3>
-                    </div>
-                </div>
+      <section class="section" id="stats">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-item reveal">
+              <div class="icon"><i class="fas fa-users"></i></div>
+              <h3 class="counter" data-target="50000">0</h3>
+              <p>누적 수강생</p>
             </div>
-        </section>
-        
-        <section class="section" id="courses">
-            <div class="container">
-                <h2 class="section-title">Generative AI Programs</h2>
-                <p class="section-subtitle">임동조 교수님이 직접 설계한 트렌디한 생성형 AI 강의를 통해 미래의 기술을 마스터하세요.</p>
-                <div class="course-accordion">
-                    <!-- 강의 커리큘럼이 JavaScript에 의해 동적으로 여기에 삽입됩니다. -->
-                </div>
+            <div class="stat-item reveal">
+              <div class="icon"><i class="fas fa-thumbs-up"></i></div>
+              <h3 class="counter" data-target="20000">0</h3>
+              <p>강의 만족도(%)</p>
             </div>
-        </section>
+            <div class="stat-item reveal">
+              <div class="icon"><i class="fas fa-comments"></i></div>
+              <h3 class="counter" data-target="1000000">0</h3>
+              <p>수강생 후기</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="vibe-content">
+        <div class="container">
+          <h2 class="section-title">The Vibe of Coding</h2>
+          <p class="section-subtitle">코딩은 차가운 기술이 아닌, 뜨거운 창작의 과정입니다. Vibe Coding의 영감을 느껴보세요.</p>
+          <div class="vibe-grid">
+            <div class="vibe-item reveal">
+              <iframe src="https://www.youtube.com/embed/P3LrfQpOi84" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              <h3>Nano Banana가 만든 Vibe Coding 데모</h3>
+            </div>
+            <div class="vibe-item reveal">
+              <iframe src="https://www.youtube.com/embed/K4OrSx0Vkj0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+              <h3>Veo3가 만든 바이크코딩</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="courses">
+        <div class="container">
+          <h2 class="section-title">Generative AI Programs</h2>
+          <p class="section-subtitle">임동조 교수님이 직접 설계한 트렌디한 생성형 AI 강의를 통해 미래의 기술을 마스터하세요.</p>
+          <div class="course-accordion"></div>
+        </div>
+      </section>
     </main>
 
     <footer id="contact">
-        <div class="container">
-            <div class="contact-grid">
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h3>주소</h3>
-                    <p>경기도 성남시 수정구 성남대로 1342<br>Vibe Coding 연구소</p>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <h3>이메일</h3>
-                    <p><a href="mailto:contact@vibecoding.com">contact@vibecoding.com</a></p>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <h3>전화번호</h3>
-                    <p><a href="tel:031-750-5114">031-750-5114</a></p>
-                </div>
-            </div>
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>주소</h3>
+            <p>경기도 성남시 수정구 성남대로 1342<br />Vibe Coding 연구소</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <h3>이메일</h3>
+            <p><a href="mailto:contact@vibecoding.com">contact@vibecoding.com</a></p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <h3>전화번호</h3>
+            <p><a href="tel:031-750-5114">031-750-5114</a></p>
+          </div>
         </div>
-        <div class="map-container">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.523534571025!2d127.1264223156294!3d37.44893397982019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca8a84a3d2b8b%3A0x385c33a364d728d1!2z6rCA7LKc64yA7ZWZ6rWQ!5e0!3m2!1sko!2skr!4v1662456816042!5m2!1sko!2skr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
+      </div>
+      <div class="map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.523534571025!2d127.1264223156294!3d37.44893397982019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca8a84a3d2b8b%3A0x385c33a364d728d1!2z6rCA7LKc64yA7ZWZ6rWQ!5e0!3m2!1sko!2skr!4v1662456816042!5m2!1sko!2skr" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
     </footer>
-    
+
     <div class="final-message">
-        <h2>사랑합니다. 임동조교수님</h2>
+      <h2>사랑합니다. 임동조교수님</h2>
     </div>
 
     <a href="#hero-section" id="to-top-btn"><i class="fas fa-arrow-up"></i></a>
-</div>
+  </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const header = document.querySelector('.main-header');
-    const toTopBtn = document.getElementById('to-top-btn');
-    const darkModeToggle = document.querySelector('.dark-mode-toggle');
-    const darkModeIcon = darkModeToggle.querySelector('i');
-    const menuToggle = document.querySelector('.menu-toggle');
-    const mainNavUl = document.querySelector('.main-nav ul');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const header = document.querySelector('.main-header');
+      const toTopBtn = document.getElementById('to-top-btn');
+      const darkModeToggle = document.querySelector('.dark-mode-toggle');
+      const darkModeIcon = darkModeToggle.querySelector('i');
+      const menuToggle = document.querySelector('.menu-toggle');
+      const mainNavUl = document.querySelector('.main-nav ul');
 
-    // 스크롤 이벤트 핸들러
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
-        
-        if (window.scrollY > 300) toTopBtn.classList.add('show');
-        else toTopBtn.classList.remove('show');
-        
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 50);
+        toTopBtn.classList.toggle('show', window.scrollY > 300);
         reveal();
         activateCounters();
-    });
+      });
 
-    // 다크 모드 토글
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme === 'dark') {
+      const currentTheme = localStorage.getItem('theme');
+      if (currentTheme === 'dark') {
         document.body.classList.add('dark-mode');
         darkModeIcon.classList.replace('fa-moon', 'fa-sun');
-    }
-    darkModeToggle.addEventListener('click', () => {
+      }
+      darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
-        let theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-        darkModeIcon.classList.toggle('fa-sun', theme === 'dark');
-        darkModeIcon.classList.toggle('fa-moon', theme === 'light');
-        localStorage.setItem('theme', theme);
-    });
-    
-    // 모바일 메뉴 토글
-    menuToggle.addEventListener('click', () => mainNavUl.classList.toggle('active'));
-    mainNavUl.addEventListener('click', (e) => {
-        if(e.target.tagName === 'A') mainNavUl.classList.remove('active');
-    });
+        const isDark = document.body.classList.contains('dark-mode');
+        darkModeIcon.classList.toggle('fa-sun', isDark);
+        darkModeIcon.classList.toggle('fa-moon', !isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
 
-    // 스크롤 시 요소 나타나는 애니메이션
-    function reveal() {
-        document.querySelectorAll(".reveal").forEach(el => {
-            const windowHeight = window.innerHeight;
-            const elementTop = el.getBoundingClientRect().top;
-            if (elementTop < windowHeight - 100) el.classList.add("active");
+      menuToggle.addEventListener('click', () => mainNavUl.classList.toggle('active'));
+      mainNavUl.addEventListener('click', (e) => { if (e.target.tagName === 'A') mainNavUl.classList.remove('active'); });
+
+      function reveal() {
+        document.querySelectorAll('.reveal').forEach((el) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = el.getBoundingClientRect().top;
+          if (elementTop < windowHeight - 100) el.classList.add('active');
         });
-    }
-    reveal();
-    
-    // 숫자 카운터 애니메이션
-    let countersActivated = false;
-    function activateCounters() {
+      }
+      reveal();
+
+      let countersActivated = false;
+      function activateCounters() {
         const statsSection = document.getElementById('stats');
         if (statsSection && !countersActivated && statsSection.getBoundingClientRect().top < window.innerHeight * 0.8) {
-            countersActivated = true;
-            document.querySelectorAll('.counter').forEach(counter => {
-                counter.innerText = '0';
-                const target = +counter.getAttribute('data-target');
-                const duration = 2000;
-                
-                let start = 0;
-                const stepTime = 20; // ms
-                const totalSteps = duration / stepTime;
-                const increment = target / totalSteps;
-
-                const updateCount = () => {
-                    start += increment;
-                    if (start < target) {
-                        counter.innerText = Math.ceil(start).toLocaleString();
-                        setTimeout(updateCount, stepTime);
-                    } else {
-                        counter.innerText = target.toLocaleString();
-                    }
-                };
-                updateCount();
-            });
+          countersActivated = true;
+          document.querySelectorAll('.counter').forEach((counter) => {
+            counter.innerText = '0';
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000; const stepTime = 20; const totalSteps = duration / stepTime; const increment = target / totalSteps;
+            let start = 0;
+            const updateCount = () => {
+              start += increment;
+              if (start < target) {
+                counter.innerText = Math.ceil(start).toLocaleString();
+                setTimeout(updateCount, stepTime);
+              } else { counter.innerText = target.toLocaleString(); }
+            };
+            updateCount();
+          });
         }
-    }
+      }
 
-    // 강의 데이터
-    const coursesData = [
-        {
-            title: "1. LLM의 모든 것: ChatGPT부터 Gemini까지",
-            goal: "LLM의 역사, 아키텍처, 대표 모델 비교, 실무 활용까지 전반적 이해",
-            curriculum: [
-                { week: '1주차', items: ['(1) LLM 개요: GPT, Gemini, Claude, LLaMA 등 주요 모델 소개', '(2) Transformer 아키텍처 심층 이해'] },
-                { week: '2주차', items: ['(3) Pre-training & Fine-tuning: GPT 계열 vs Gemini', '(4) RLHF, RAG, Self-Instruct 등 최신 기법'] },
-                { week: '3주차', items: ['(5) OpenAI, Google, Anthropic, Meta 전략 비교', '(6) 한국어 LLM 동향 (KARLO, HyperCLOVA, KoAlpaca)'] },
-                { week: '4주차', items: ['(7) LLM 활용 사례: 검색, 요약, 번역, 에이전트', '(8) Hands-on: ChatGPT API와 Gemini API 실습'] },
-                { week: '5주차', items: ['(9) LLM 평가와 벤치마킹: MMLU, BIG-Bench 등', '(10) 미래 전망: 멀티모달, 온디바이스 LLM, AGI'] }
-            ]
-        },
-        {
-            title: "2. Diffusion Models 마스터: Midjourney & Stable Diffusion",
-            goal: "생성형 이미지 모델의 원리와 실습",
-            curriculum: [
-                { week: '1주차', items: ['(1) Diffusion Model 수학적 원리', '(2) DALL·E, Stable Diffusion, Midjourney 비교'] },
-                { week: '2주차', items: ['(3) Prompt-to-Image 실습 (Stable Diffusion WebUI)', '(4) Midjourney Prompt 디자인 전략'] },
-                { week: '3주차', items: ['(5) ControlNet, LoRA, Textual Inversion', '(6) 이미지 업스케일링 & 후처리'] },
-                { week: '4주차', items: ['(7) 애니메이션과 영상 생성 (AnimateDiff, Runway)', '(8) 산업 활용: 게임, 패션, 건축, 마케팅'] },
-                { week: '5주차', items: ['(9) 저작권/윤리 문제 및 안전 가이드', '(10) 종합 프로젝트: 나만의 포트폴리오 이미지 제작'] }
-            ]
-        },
-        {
-            title: "3. 멀티모달 AI 에이전트 개발 실전",
-            goal: "텍스트+이미지+음성+영상 입력을 처리하는 AI 에이전트 구현",
-            curriculum: [
-                { week: '1주차', items: ['(1) 멀티모달 AI 개요: CLIP, Flamingo, Kosmos', '(2) LangChain, LangGraph 기반 에이전트 구조'] },
-                { week: '2주차', items: ['(3) 이미지+텍스트 에이전트 실습', '(4) 음성 인식 및 합성 연동 (Whisper, TTS)'] },
-                { week: '3주차', items: ['(5) 영상 이해 모델 (Veo, Sora, LLaVA)', '(6) 멀티모달 검색 & RAG 적용'] },
-                { week: '4주차', items: ['(7) 도구 사용형 에이전트 (Toolformer, AutoGPT)', '(8) 클라우드 & API 연동 (OpenAI, HuggingFace, KAMP-AI)'] },
-                { week: '5주차', items: ['(9) 산업별 사례: 의료, 교육, 고객센터, 메타버스', '(10) 종합 실습: 나만의 멀티모달 챗봇 제작'] }
-            ]
-        },
-        {
-            title: "4. No-Code/Low-Code AI 플랫폼 활용법",
-            goal: "프로그래밍 없이 AI 모델을 서비스에 적용",
-            curriculum: [
-                { week: '1주차', items: ['(1) No-Code/Low-Code 개념 및 생태계', '(2) 대표 플랫폼 소개: Zapier, Make, Bubble, PowerApps'] },
-                { week: '2주차', items: ['(3) 데이터 파이프라인 자동화 실습', '(4) ChatGPT, Gemini 연동 자동화'] },
-                { week: '3주차', items: ['(5) Stable Diffusion/Midjourney API 연계', '(6) 음성/영상 AI 통합 (Suno, Veo, Sora)'] },
-                { week: '4주차', items: ['(7) 업무 자동화 시나리오 설계', '(8) 보안, 인증, 개인정보 보호'] },
-                { week: '5주차', items: ['(9) 기업 내 AI 워크플로우 구축 사례', '(10) 종합 프로젝트: No-Code AI 서비스 구축'] }
-            ]
-        },
-        {
-            title: "5. 생성형 AI를 위한 프롬프트 엔지니어링",
-            goal: "최적의 결과를 끌어내는 프롬프트 설계법",
-            curriculum: [
-                { week: '1주차', items: ['(1) Prompt 기본 구조와 원리', '(2) Chain-of-Thought, ReAct, ToT'] },
-                { week: '2주차', items: ['(3) Few-shot & Zero-shot 프롬프트', '(4) RAG와 프롬프트 최적화'] },
-                { week: '3주차', items: ['(5) 프롬프트 평가 및 자동화 (LangSmith)', '(6) 이미지/영상 생성용 프롬프트 디자인'] },
-                { week: '4주차', items: ['(7) 멀티모달 프롬프트 (텍스트+이미지+코드)', '(8) 윤리/편향 문제와 프롬프트 가드레일'] },
-                { week: '5주차', items: ['(9) 산업별 맞춤 프롬프트 사례', '(10) 종합 실습: 프롬프트 라이브러리 제작'] }
-            ]
-        },
-        {
-            title: "6. AI 윤리와 안전: 책임감 있는 AI 개발",
-            goal: "책임 있는 AI 개발과 정책 이해",
-            curriculum: [
-                { week: '1주차', items: ['(1) AI 윤리 개념과 글로벌 가이드라인', '(2) 데이터 편향과 차별'] },
-                { week: '2주차', items: ['(3) 프라이버시 보호, 개인정보 규제', '(4) 한국/EU/미국 AI 규제 비교'] },
-                { week: '3.주차', items: ['(5) 생성형 AI의 위험 (Hallucination, Deepfake)', '(6) 안전성 평가 기법'] },
-                { week: '4주차', items: ['(7) Explainable AI, Fair AI', '(8) AI 거버넌스와 책임 체계'] },
-                { week: '5주차', items: ['(9) 산업별 윤리적 고려사항', '(10) 실습: Responsible AI 가이드라인 수립'] }
-            ]
-        },
-        {
-            title: "7. Veo & Sora를 활용한 AI 영상 제작",
-            goal: "AI 기반 영상 제작 실무",
-            curriculum: [
-                { week: '1주차', items: ['(1) AI 영상 생성 기술 개요', '(2) Veo & Sora 아키텍처와 특징'] },
-                { week: '2주차', items: ['(3) 텍스트-투-비디오 실습', '(4) 영상 품질 향상 기법'] },
-                { week: '3주차', items: ['(5) 시네마틱 연출 & 스타일링', '(6) 영상 합성 및 편집'] },
-                { week: '4주차', items: ['(7) 상업 활용 사례: 광고, 영화, 교육', '(8) 윤리/저작권 문제'] },
-                { week: '5주차', items: ['(9) AI 영상 포트폴리오 제작', '(10) 종합 프로젝트 발표'] }
-            ]
-        },
-        {
-            title: "8. 파인튜닝(Fine-tuning)으로 나만의 AI 모델 만들기",
-            goal: "맞춤형 AI 모델 학습 및 배포",
-            curriculum: [
-                { week: '1주차', items: ['(1) Fine-tuning 개념과 필요성', '(2) 데이터 준비 및 정제'] },
-                { week: '2주차', items: ['(3) HuggingFace Transformers 실습', '(4) LoRA, QLoRA, PEFT'] },
-                { week: '3주차', items: ['(5) 파인튜닝 실습: 텍스트 모델', '(6) 파인튜닝 실습: 이미지 모델'] },
-                { week: '4주차', items: ['(7) 모델 최적화: 양자화, 지식 증류', '(8) 배포: API, Docker, 클라우드'] },
-                { week: '5주차', items: ['(9) 사례 연구: 기업 맞춤형 LLM', '(10) 종합 실습: 나만의 AI 모델 구축'] }
-            ]
-        },
-        {
-            title: "9. 생성형 AI 기반 비즈니스 모델 혁신",
-            goal: "AI를 활용한 신규 비즈니스 전략 수립",
-            curriculum: [
-                { week: '1주차', items: ['(1) 생성형 AI 시장 동향', '(2) 비즈니스 모델 캔버스와 AI 적용'] },
-                { week: '2주차', items: ['(3) AI SaaS/On-Prem 비즈니스 전략', '(4) 구독형 vs 라이선스형 수익 모델'] },
-                { week: '3주차', items: ['(5) 산업별 활용 사례 (금융, 의료, 교육, 엔터테인먼트)', '(6) 스타트업/대기업 사례 분석'] },
-                { week: '4주차', items: ['(7) 투자, R&D, 지재권 전략', '(8) 정부/공공 AI 정책 연계'] },
-                { week: '5주차', items: ['(9) 비즈니스 모델 설계 실습', '(10) Demo Day 발표'] }
-            ]
-        },
-        {
-            title: "10. AI 음악과 예술: Suno & Udio 활용 창작",
-            goal: "음악·예술 창작에 AI 활용",
-            curriculum: [
-                { week: '1주차', items: ['(1) AI 음악 생성 기술 개요', '(2) Suno & Udio 소개'] },
-                { week: '2주차', items: ['(3) 텍스트-투-뮤직 실습', '(4) 장르/스타일 변환'] },
-                { week: '3주차', items: ['(5) 협업 기반 음악 제작 (보컬 합성 포함)', '(6) AI와 시각예술 접목'] },
-                { week: '4주차', items: ['(7) 공연, 방송, 영상 산업 활용', '(8) 저작권과 라이선스 이슈'] },
-                { week: '5주차', items: ['(9) 나만의 AI 음악 포트폴리오 제작', '(10) 종합 공연/발표'] }
-            ]
-        }
-    ];
+      // Courses data
+      const coursesData = [
+        { title: '1. LLM의 모든 것: ChatGPT부터 Gemini까지', goal: 'LLM의 역사, 아키텍처, 대표 모델 비교, 실무 활용까지 전반적 이해', curriculum: [
+          { week: '1주차', items: ['(1) LLM 개요: GPT, Gemini, Claude, LLaMA 등 주요 모델 소개', '(2) Transformer 아키텍처 심층 이해'] },
+          { week: '2주차', items: ['(3) Pre-training & Fine-tuning: GPT 계열 vs Gemini', '(4) RLHF, RAG, Self-Instruct 등 최신 기법'] },
+          { week: '3주차', items: ['(5) OpenAI, Google, Anthropic, Meta 전략 비교', '(6) 한국어 LLM 동향 (KARLO, HyperCLOVA, KoAlpaca)'] },
+          { week: '4주차', items: ['(7) LLM 활용 사례: 검색, 요약, 번역, 에이전트', '(8) Hands-on: ChatGPT API와 Gemini API 실습'] },
+          { week: '5주차', items: ['(9) LLM 평가와 벤치마킹: MMLU, BIG-Bench 등', '(10) 미래 전망: 멀티모달, 온디바이스 LLM, AGI'] }
+        ] },
+        { title: '2. Diffusion Models 마스터: Midjourney & Stable Diffusion', goal: '생성형 이미지 모델의 원리와 실습', curriculum: [
+          { week: '1주차', items: ['(1) Diffusion Model 수학적 원리', '(2) DALL·E, Stable Diffusion, Midjourney 비교'] },
+          { week: '2주차', items: ['(3) Prompt-to-Image 실습 (Stable Diffusion WebUI)', '(4) Midjourney Prompt 디자인 전략'] },
+          { week: '3주차', items: ['(5) ControlNet, LoRA, Textual Inversion', '(6) 이미지 업스케일링 & 후처리'] },
+          { week: '4주차', items: ['(7) 애니메이션과 영상 생성 (AnimateDiff, Runway)', '(8) 산업 활용: 게임, 패션, 건축, 마케팅'] },
+          { week: '5주차', items: ['(9) 저작권/윤리 문제 및 안전 가이드', '(10) 종합 프로젝트: 나만의 포트폴리오 이미지 제작'] }
+        ] },
+        { title: '3. 멀티모달 AI 에이전트 개발 실전', goal: '텍스트+이미지+음성+영상 입력을 처리하는 AI 에이전트 구현', curriculum: [
+          { week: '1주차', items: ['(1) 멀티모달 AI 개요: CLIP, Flamingo, Kosmos', '(2) LangChain, LangGraph 기반 에이전트 구조'] },
+          { week: '2주차', items: ['(3) 이미지+텍스트 에이전트 실습', '(4) 음성 인식 및 합성 연동 (Whisper, TTS)'] },
+          { week: '3주차', items: ['(5) 영상 이해 모델 (Veo, Sora, LLaVA)', '(6) 멀티모달 검색 & RAG 적용'] },
+          { week: '4주차', items: ['(7) 도구 사용형 에이전트 (Toolformer, AutoGPT)', '(8) 클라우드 & API 연동 (OpenAI, HuggingFace, KAMP-AI)'] },
+          { week: '5주차', items: ['(9) 산업별 사례: 의료, 교육, 고객센터, 메타버스', '(10) 종합 실습: 나만의 멀티모달 챗봇 제작'] }
+        ] },
+        { title: '4. No-Code/Low-Code AI 플랫폼 활용법', goal: '프로그래밍 없이 AI 모델을 서비스에 적용', curriculum: [
+          { week: '1주차', items: ['(1) No-Code/Low-Code 개념 및 생태계', '(2) 대표 플랫폼 소개: Zapier, Make, Bubble, PowerApps'] },
+          { week: '2주차', items: ['(3) 데이터 파이프라인 자동화 실습', '(4) ChatGPT, Gemini 연동 자동화'] },
+          { week: '3주차', items: ['(5) Stable Diffusion/Midjourney API 연계', '(6) 음성/영상 AI 통합 (Suno, Veo, Sora)'] },
+          { week: '4주차', items: ['(7) 업무 자동화 시나리오 설계', '(8) 보안, 인증, 개인정보 보호'] },
+          { week: '5주차', items: ['(9) 기업 내 AI 워크플로우 구축 사례', '(10) 종합 프로젝트: No-Code AI 서비스 구축'] }
+        ] },
+        { title: '5. 생성형 AI를 위한 프롬프트 엔지니어링', goal: '최적의 결과를 끌어내는 프롬프트 설계법', curriculum: [
+          { week: '1주차', items: ['(1) Prompt 기본 구조와 원리', '(2) Chain-of-Thought, ReAct, ToT'] },
+          { week: '2주차', items: ['(3) Few-shot & Zero-shot 프롬프트', '(4) RAG와 프롬프트 최적화'] },
+          { week: '3주차', items: ['(5) 프롬프트 평가 및 자동화 (LangSmith)', '(6) 이미지/영상 생성용 프롬프트 디자인'] },
+          { week: '4주차', items: ['(7) 멀티모달 프롬프트 (텍스트+이미지+코드)', '(8) 윤리/편향 문제와 프롬프트 가드레일'] },
+          { week: '5주차', items: ['(9) 산업별 맞춤 프롬프트 사례', '(10) 종합 실습: 프롬프트 라이브러리 제작'] }
+        ] },
+        { title: '6. AI 윤리와 안전: 책임감 있는 AI 개발', goal: '책임 있는 AI 개발과 정책 이해', curriculum: [
+          { week: '1주차', items: ['(1) AI 윤리 개념과 글로벌 가이드라인', '(2) 데이터 편향과 차별'] },
+          { week: '2주차', items: ['(3) 프라이버시 보호, 개인정보 규제', '(4) 한국/EU/미국 AI 규제 비교'] },
+          { week: '3.주차', items: ['(5) 생성형 AI의 위험 (Hallucination, Deepfake)', '(6) 안전성 평가 기법'] },
+          { week: '4주차', items: ['(7) Explainable AI, Fair AI', '(8) AI 거버넌스와 책임 체계'] },
+          { week: '5주차', items: ['(9) 산업별 윤리적 고려사항', '(10) 실습: Responsible AI 가이드라인 수립'] }
+        ] },
+        { title: '7. Veo & Sora를 활용한 AI 영상 제작', goal: 'AI 기반 영상 제작 실무', curriculum: [
+          { week: '1주차', items: ['(1) AI 영상 생성 기술 개요', '(2) Veo & Sora 아키텍처와 특징'] },
+          { week: '2주차', items: ['(3) 텍스트-투-비디오 실습', '(4) 영상 품질 향상 기법'] },
+          { week: '3주차', items: ['(5) 시네마틱 연출 & 스타일링', '(6) 영상 합성 및 편집'] },
+          { week: '4주차', items: ['(7) 상업 활용 사례: 광고, 영화, 교육', '(8) 윤리/저작권 문제'] },
+          { week: '5주차', items: ['(9) AI 영상 포트폴리오 제작', '(10) 종합 프로젝트 발표'] }
+        ] },
+        { title: '8. 파인튜닝(Fine-tuning)으로 나만의 AI 모델 만들기', goal: '맞춤형 AI 모델 학습 및 배포', curriculum: [
+          { week: '1주차', items: ['(1) Fine-tuning 개념과 필요성', '(2) 데이터 준비 및 정제'] },
+          { week: '2주차', items: ['(3) HuggingFace Transformers 실습', '(4) LoRA, QLoRA, PEFT'] },
+          { week: '3주차', items: ['(5) 파인튜닝 실습: 텍스트 모델', '(6) 파인튜닝 실습: 이미지 모델'] },
+          { week: '4주차', items: ['(7) 모델 최적화: 양자화, 지식 증류', '(8) 배포: API, Docker, 클라우드'] },
+          { week: '5주차', items: ['(9) 사례 연구: 기업 맞춤형 LLM', '(10) 종합 실습: 나만의 AI 모델 구축'] }
+        ] },
+        { title: '9. 생성형 AI 기반 비즈니스 모델 혁신', goal: 'AI를 활용한 신규 비즈니스 전략 수립', curriculum: [
+          { week: '1주차', items: ['(1) 생성형 AI 시장 동향', '(2) 비즈니스 모델 캔버스와 AI 적용'] },
+          { week: '2주차', items: ['(3) AI SaaS/On-Prem 비즈니스 전략', '(4) 구독형 vs 라이선스형 수익 모델'] },
+          { week: '3주차', items: ['(5) 산업별 활용 사례 (금융, 의료, 교육, 엔터테인먼트)', '(6) 스타트업/대기업 사례 분석'] },
+          { week: '4주차', items: ['(7) 투자, R&D, 지재권 전략', '(8) 정부/공공 AI 정책 연계'] },
+          { week: '5주차', items: ['(9) 비즈니스 모델 설계 실습', '(10) Demo Day 발표'] }
+        ] },
+        { title: '10. AI 음악과 예술: Suno & Udio 활용 창작', goal: '음악·예술 창작에 AI 활용', curriculum: [
+          { week: '1주차', items: ['(1) AI 음악 생성 기술 개요', '(2) Suno & Udio 소개'] },
+          { week: '2주차', items: ['(3) 텍스트-투-뮤직 실습', '(4) 장르/스타일 변환'] },
+          { week: '3주차', items: ['(5) 협업 기반 음악 제작 (보컬 합성 포함)', '(6) AI와 시각예술 접목'] },
+          { week: '4주차', items: ['(7) 공연, 방송, 영상 산업 활용', '(8) 저작권과 라이선스 이슈'] },
+          { week: '5주차', items: ['(9) 나만의 AI 음악 포트폴리오 제작', '(10) 종합 공연/발표'] }
+        ] }
+      ];
 
-    const accordionContainer = document.querySelector('.course-accordion');
-
-    // 강의 데이터를 기반으로 HTML 동적 생성
-    coursesData.forEach(course => {
+      const accordionContainer = document.querySelector('.course-accordion');
+      coursesData.forEach((course) => {
         const courseItem = document.createElement('div');
         courseItem.className = 'course-item reveal';
-
         let tableHtml = '<table class="curriculum-table"><tbody>';
-        course.curriculum.forEach(weekData => {
-            tableHtml += `
-                <tr>
-                    <th>${weekData.week}</th>
-                    <td>${weekData.items.join('<br>')}</td>
-                </tr>
-            `;
+        course.curriculum.forEach((weekData) => {
+          tableHtml += `
+            <tr>
+              <th>${weekData.week}</th>
+              <td>${weekData.items.join('<br>')}</td>
+            </tr>
+          `;
         });
         tableHtml += '</tbody></table>';
-
         courseItem.innerHTML = `
-            <div class="course-header">
-                <h3>${course.title}</h3>
-                <span class="icon"><i class="fas fa-chevron-down"></i></span>
+          <div class="course-header">
+            <h3>${course.title}</h3>
+            <span class="icon"><i class="fas fa-chevron-down"></i></span>
+          </div>
+          <div class="course-content">
+            <div class="course-content-inner">
+              <p class="course-goal"><strong>목표:</strong> ${course.goal}</p>
+              ${tableHtml}
             </div>
-            <div class="course-content">
-                <div class="course-content-inner">
-                    <p class="course-goal"><strong>목표:</strong> ${course.goal}</p>
-                    ${tableHtml}
-                </div>
-            </div>
+          </div>
         `;
         accordionContainer.appendChild(courseItem);
-    });
+      });
 
-
-    // 아코디언 메뉴 동작 (마우스 호버)
-    document.querySelectorAll('.course-item').forEach(item => {
+      document.querySelectorAll('.course-item').forEach((item) => {
         const content = item.querySelector('.course-content');
-
         item.addEventListener('mouseenter', () => {
-            // 마우스를 올리면 현재 항목을 엽니다.
-            item.classList.add('active');
-            content.style.maxHeight = content.scrollHeight + "px";
+          item.classList.add('active');
+          content.style.maxHeight = content.scrollHeight + 'px';
         });
-
         item.addEventListener('mouseleave', () => {
-            // 마우스를 떼면 현재 항목을 닫습니다.
-            item.classList.remove('active');
-            content.style.maxHeight = null;
+          item.classList.remove('active');
+          content.style.maxHeight = null;
         });
+      });
     });
-});
-</script>
-
+  </script>
 </body>
 </html>
